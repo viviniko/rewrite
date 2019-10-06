@@ -1,0 +1,49 @@
+<?php
+
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateRewriteTable extends Migration
+{
+    /**
+     * @var string
+     */
+    protected $entitiesTable;
+
+    /**
+     * CreateCatalogTable constructor.
+     */
+    public function __construct()
+    {
+        $this->entitiesTable = Config::get('rewrite.entities_table');
+    }
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        // Create table for storing rewrites
+        Schema::create($this->entitiesTable, function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('request_path');
+            $table->morphs('entity');
+
+            $table->unique(['request_path']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists($this->entitiesTable);
+    }
+}
