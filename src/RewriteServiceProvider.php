@@ -6,7 +6,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Viviniko\Rewrite\Console\Commands\RewriteTableCommand;
-use Viviniko\Rewrite\Facades\Rewrite;
+use Viviniko\Rewrite\Facades\Rewrite as RewriteFacade;
+use Viviniko\Rewrite\Rewrite;
 
 class RewriteServiceProvider extends BaseServiceProvider
 {
@@ -46,7 +47,7 @@ class RewriteServiceProvider extends BaseServiceProvider
         });
 
         Paginator::currentPathResolver(function () {
-            return (Rewrite::request() ?? $this->app['request'])->url();
+            return (RewriteFacade::request() ?? $this->app['request'])->url();
         });
     }
 
